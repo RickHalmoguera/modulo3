@@ -1,4 +1,4 @@
-import { Nav } from "./components/Nav/Nav"
+import { Root } from "./pages/Root"
 
 
 function App() {
@@ -6,7 +6,7 @@ function App() {
 
   return (
     <>
-      <Nav />
+     <Root />
     </>
   )
 }
