@@ -13,7 +13,11 @@ export const searchSlice = createSlice({
     reducers: {
         getPhoto: (state,action) => {
             state.data = [...state.data,action.payload]
-        }
+        },
+        updatePhotoList: (state, action) => {
+            state.data = action.payload
+            
+          }
     },
     extraReducers: (builder) => {
         builder.addCase(getAllThunk.pending, (state,action) => {
@@ -36,7 +40,7 @@ export const searchSlice = createSlice({
     }
 });
 
-export const {getPhoto} = searchSlice.actions
+export const {getPhoto, updatePhotoList} = searchSlice.actions
 export const getPhotoData = (state) => state.photo.data
 export const getPhotoStatus = (state) => state.photo.status
 export const getPhotoError = (state) => state.photo.error

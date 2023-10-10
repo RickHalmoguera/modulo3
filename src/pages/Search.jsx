@@ -3,9 +3,9 @@ import SearchIcon from '@mui/icons-material/Search'
 import TurnedInIcon from '@mui/icons-material/TurnedIn';
 import TurnedInNotIcon from '@mui/icons-material/TurnedInNot';
 import { useDispatch, useSelector } from "react-redux"
-import { getPhotoData, getPhotoStatus, getPhotoError } from "../features/search/searchSlice" 
-import { addFavorite } from "../features/favoritesSlice/favoritesSlice";
-import { getAllThunk, getSearchThunk } from '../features/search/searchSliceThunk'
+import { getPhotoData, getPhotoStatus, getPhotoError, updatePhotoList } from "../features/search/searchSlice" 
+import { addFavorite, removeFavorite } from "../features/favoritesSlice/favoritesSlice";
+import { getSearchThunk } from '../features/search/searchSliceThunk'
 
 
 
@@ -16,18 +16,32 @@ export const Search = () => {
   const error = useSelector(getPhotoError)
   const [searchWord, setSearchWord] = useState("")
 
+ 
+ 
+  
   const handleSubmit = (e)=>{
     e.preventDefault()
     dispatch(getSearchThunk(searchWord))
   }
-
-  const handleAddToFavorite = (photo)=>{
-    console.log(photo)
+    
+  const handleAddToFavorite = (photo,index) => {
     dispatch(addFavorite(photo));
+    const updatedPhotosToShow = photos.map((item, i) =>
+      i === index ? { ...item, isFavorite: true } : item
+    )
+  
+    dispatch(updatePhotoList(updatedPhotosToShow))
+  
   }
-  /*useEffect(() => {
-    dispatch(getAllThunk())
-  }, [])*/
+
+  const handleRemoveFromFavorite = (photo,index) => {
+    dispatch(removeFavorite(photo.id));
+    const updatedPhotosToShow = photos.map((item, i) =>
+      i === index ? { ...item, isFavorite: false } : item
+    )
+  
+    dispatch(updatePhotoList(updatedPhotosToShow))
+  };
 
   if (status === "pending") {
     return <div>Loading...</div>
@@ -48,10 +62,10 @@ export const Search = () => {
         </button>
       </form>
     
-      {photos.map((photo) => (
+      {photos.map((photo,index) => (
         <div key={photo.img} className="photo-card">
           <img src={photo.img} alt={photo.description} />
-          <TurnedInNotIcon onClick={() => handleAddToFavorite(photo)} />
+          { photo.isFavorite ? <TurnedInIcon onClick={() => handleRemoveFromFavorite(photo,index)} /> : <TurnedInNotIcon onClick={() => handleAddToFavorite(photo,index)} />} 
           <div className="photo-details">
           <p>{photo.id}</p>
             <p>{photo.description}</p>

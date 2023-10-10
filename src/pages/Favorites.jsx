@@ -2,15 +2,26 @@
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux';
 import { getFavoritesData } from '../features/favoritesSlice/favoritesSlice'
-import { removeFavorite } from '../features/favoritesSlice/favoritesSlice';
+import { removeFavorite } from '../features/favoritesSlice/favoritesSlice'
+import { getPhotoData, updatePhotoList } from "../features/search/searchSlice" 
 import TurnedInIcon from '@mui/icons-material/TurnedIn';
+
 export const Favorites= () => {
+  const photos = useSelector(getPhotoData)
   const favorites = useSelector(getFavoritesData)
   const dispatch = useDispatch()
 
+  console.log(photos)
+
   const handleRemoveFavorite = (photo) => {
-    console.log(photo.id)
-    dispatch(removeFavorite(photo.id))
+    const idToRemove = photo.id
+    dispatch(removeFavorite(idToRemove))
+    const updatedPhotosToShow = photos.map((item) =>
+    item.id === idToRemove ? { ...item, isFavorite: false } : item
+  )
+
+  dispatch(updatePhotoList(updatedPhotosToShow))
+    
   }
 
   return (
