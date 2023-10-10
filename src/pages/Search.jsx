@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react"
 import SearchIcon from '@mui/icons-material/Search'
+import TurnedInIcon from '@mui/icons-material/TurnedIn';
+import TurnedInNotIcon from '@mui/icons-material/TurnedInNot';
 import { useDispatch, useSelector } from "react-redux"
 import { getPhotoData, getPhotoStatus, getPhotoError } from "../features/search/searchSlice" 
+import { addFavorite } from "../features/favoritesSlice/favoritesSlice";
 import { getAllThunk, getSearchThunk } from '../features/search/searchSliceThunk'
 
 
@@ -16,7 +19,11 @@ export const Search = () => {
   const handleSubmit = (e)=>{
     e.preventDefault()
     dispatch(getSearchThunk(searchWord))
-    
+  }
+
+  const handleAddToFavorite = (photo)=>{
+    console.log(photo)
+    dispatch(addFavorite(photo));
   }
   /*useEffect(() => {
     dispatch(getAllThunk())
@@ -44,7 +51,9 @@ export const Search = () => {
       {photos.map((photo) => (
         <div key={photo.img} className="photo-card">
           <img src={photo.img} alt={photo.description} />
+          <TurnedInNotIcon onClick={() => handleAddToFavorite(photo)} />
           <div className="photo-details">
+          <p>{photo.id}</p>
             <p>{photo.description}</p>
             <p>Date: {photo.date}</p>
             <p>Dimensions: {photo.width}x{photo.height}</p>

@@ -24,6 +24,7 @@ export const getSearchThunk = createAsyncThunk("searchPhotos/getSearchPhotos", a
     const json = await request.json()
     console.log(json)
         return json.results.map(photo => ({
+            id: photo.id,
             description: photo.alt_description,
             date: photo.created_at,
             width: photo.width,
