@@ -1,8 +1,9 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import SearchIcon from '@mui/icons-material/Search'
 import { useDispatch, useSelector } from "react-redux"
 import { getPhotoData, getPhotoStatus, getPhotoError } from "../features/search/searchSlice" 
-import {getAllThunk} from '../features/search/searchSliceThunk'
+import { getAllThunk, getSearchThunk } from '../features/search/searchSliceThunk'
+
 
 
 export const Search = () => {
@@ -10,13 +11,16 @@ export const Search = () => {
   const photos = useSelector(getPhotoData)
   const status = useSelector(getPhotoStatus)
   const error = useSelector(getPhotoError)
+  const [searchWord, setSearchWord] = useState("")
 
   const handleSubmit = (e)=>{
-      e.preventDefault()
+    e.preventDefault()
+    dispatch(getSearchThunk(searchWord))
+    
   }
-  useEffect(() => {
+  /*useEffect(() => {
     dispatch(getAllThunk())
-  }, [])
+  }, [])*/
 
   if (status === "pending") {
     return <div>Loading...</div>
@@ -31,7 +35,7 @@ export const Search = () => {
       <h1>Welcome to Photo Gallery!</h1>
 
       <form onSubmit={handleSubmit}>
-        <input type="text" name="" id="getPhoto" placeholder="Search fot photos..." />
+        <input type="text" name="" id="getPhoto" placeholder="Search fot photos..." onChange={(e)=>setSearchWord(e.currentTarget.value)}/>
         <button type="submit">
           <SearchIcon/>
         </button>

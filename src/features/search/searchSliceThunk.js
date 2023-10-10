@@ -3,7 +3,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 const API_URL = "https://api.unsplash.com/"
 const CLIENT_ID ="VlcM8qT9DXQJ9leBuNkAPNiI33xuIfsb4ZagTqN8QvY"
 
-export const getAllThunk = createAsyncThunk("randomPhotos/getRandomPhotos", async (data) => {
+export const getAllThunk = createAsyncThunk("randomPhotos/getRandomPhotos", async () => {
     const request = await fetch(`${API_URL}/photos/random/?client_id=${CLIENT_ID}&count=15`)
     const json = await request.json()
     console.log(json)
@@ -19,11 +19,11 @@ export const getAllThunk = createAsyncThunk("randomPhotos/getRandomPhotos", asyn
     }
 )
 
-export const getSearchThunk = createAsyncThunk("searchPhotos/getSearchPhotos", async (data) => {
-    const request = await fetch(`${API_URL}/photos/random/?client_id=${CLIENT_ID}&count=15`)
+export const getSearchThunk = createAsyncThunk("searchPhotos/getSearchPhotos", async (searchWord) => {
+    const request = await fetch(`${API_URL}search/photos/?client_id=${CLIENT_ID}&query=${searchWord}`)
     const json = await request.json()
     console.log(json)
-        return json.map(photo => ({
+        return json.results.map(photo => ({
             description: photo.alt_description,
             date: photo.created_at,
             width: photo.width,
