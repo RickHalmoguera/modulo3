@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux'
 import { getFavoritesData } from '../features/favoritesSlice/favoritesSlice'
 import { removeFavorite, updatePhotoFavoritesList } from '../features/favoritesSlice/favoritesSlice'
 import { getPhotoData, updatePhotoList } from "../features/search/searchSlice"
-import ImportExportIcon from '@mui/icons-material/ImportExport'
 import SearchIcon from '@mui/icons-material/Search'
 import EditIcon from '@mui/icons-material/Edit'
 import SaveIcon from '@mui/icons-material/Save'
@@ -16,11 +15,6 @@ export const Favorites = () => {
   const photos = useSelector(getPhotoData)
   const [favorites, setFavorites] = useState (useSelector(getFavoritesData))
   const [initialFavorites,setInitialFavorites] = useState(favorites)
-  const [isInverted, setIsInverted] = useState(false)
-  const [optionValue, setOptionValue] = useState("")
-  const [firstValueToSort, setFirstValueToSort] = useState("a")
-  const [secondValueToSort, setSecondValueToSort] = useState("b")
-
 
   const [searchWord,setSearchWord] = useState("")
   const [editingPhotoId, setEditingPhotoId] = useState(null) 
@@ -29,17 +23,19 @@ export const Favorites = () => {
   const handleRemoveFavorite = (photo) => {
     const idToRemove = photo.id
     dispatch(removeFavorite(idToRemove))
-
+    
     const updatedPhotosToShow = photos.map((item) =>
-      item.id === idToRemove ? { ...item, isFavorite: false } : item
+    item.id === idToRemove ? { ...item, isFavorite: false } : item
     )
     dispatch(updatePhotoList(updatedPhotosToShow))
+    setFavorites((prevFavorites) => prevFavorites.filter((fav) => fav.id !== idToRemove))
+
   }
 
   const handleSubmit= (e)=>{
     e.preventDefault()
     if(searchWord!==""){
-      setFavorites(favorites.filter((photo) => photo.description.includes(searchWord)))
+      setFavorites((prevFavorites) => prevFavorites.filter((photo) => photo.description.includes(searchWord)))
     }else{
       setFavorites(initialFavorites)
     }
@@ -53,6 +49,7 @@ export const Favorites = () => {
     )
 
     dispatch(updatePhotoFavoritesList(updatedPhotosToShow))
+    setFavorites(updatedPhotosToShow)
     setEditingPhotoId(null) 
   }
 
@@ -86,8 +83,6 @@ export const Favorites = () => {
     }
   }
   
-
-
   return (
     <>
       <h1>Favorite Photos</h1>
@@ -104,9 +99,6 @@ export const Favorites = () => {
         <option value="likes">Likes</option>
         <option value="date">Date</option>
       </select>
-      <button>
-        <ImportExportIcon onClick ={()=> setIsInverted(!isInverted)}/>
-      </button>
       <h2>Your favorites photos</h2>
       {favorites.map((photo) => (
         <div key={photo.img} className="photo-card">

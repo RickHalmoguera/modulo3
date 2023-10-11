@@ -10,13 +10,11 @@ export const favoriteSlice = createSlice({
       state.push(action.payload);
     },
     removeFavorite: (state, action) => {
-
       const photoIdToRemove = action.payload
       return state.filter((photo) => photo.id !== photoIdToRemove)
     },
     updatePhotoFavoritesList: (state, action) => {
-      return state = action.payload
-      
+      return state = action.payload 
     }
   },
 })
