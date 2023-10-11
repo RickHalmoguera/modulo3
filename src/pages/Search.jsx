@@ -25,6 +25,7 @@ export const Search = () => {
       dispatch(getAllThunk())
     }else{
       dispatch(getSearchThunk(searchWord))
+      setSearchWord("")
     }
   }
     
