@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import SearchIcon from '@mui/icons-material/Search'
 import TurnedInIcon from '@mui/icons-material/TurnedIn';
 import TurnedInNotIcon from '@mui/icons-material/TurnedInNot';
 import { useDispatch, useSelector } from "react-redux"
 import { getPhotoData, getPhotoStatus, getPhotoError, updatePhotoList } from "../features/search/searchSlice" 
 import { addFavorite, removeFavorite } from "../features/favoritesSlice/favoritesSlice";
-import { getSearchThunk } from '../features/search/searchSliceThunk'
+import { getSearchThunk, getAllThunk } from '../features/search/searchSliceThunk'
 
 
 
@@ -21,7 +21,11 @@ export const Search = () => {
   
   const handleSubmit = (e)=>{
     e.preventDefault()
-    dispatch(getSearchThunk(searchWord))
+    if(searchWord===""){
+      dispatch(getAllThunk())
+    }else{
+      dispatch(getSearchThunk(searchWord))
+    }
   }
     
   const handleAddToFavorite = (photo,index) => {

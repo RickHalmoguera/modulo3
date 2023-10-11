@@ -8,7 +8,6 @@ import { getAllThunk } from "../features/search/searchSliceThunk";
 export const Root = ()=>{
     const dispatch = useDispatch()
     useEffect(() => {
-        console.log('effect todos')
         dispatch(getAllThunk())
       }, [])
     

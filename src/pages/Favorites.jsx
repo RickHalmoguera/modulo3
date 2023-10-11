@@ -3,16 +3,20 @@ import { useDispatch } from 'react-redux'
 import { getFavoritesData } from '../features/favoritesSlice/favoritesSlice'
 import { removeFavorite, updatePhotoFavoritesList } from '../features/favoritesSlice/favoritesSlice'
 import { getPhotoData, updatePhotoList } from "../features/search/searchSlice"
+import SearchIcon from '@mui/icons-material/Search'
 import EditIcon from '@mui/icons-material/Edit'
 import SaveIcon from '@mui/icons-material/Save'
 import TurnedInIcon from '@mui/icons-material/TurnedIn'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export const Favorites = () => {
+
   const photos = useSelector(getPhotoData)
-  const favorites = useSelector(getFavoritesData)
+  const [favorites, setFavorites] = useState (useSelector(getFavoritesData))
+  const [initialFavorites,setInitialFavorites] = useState(favorites)
   const dispatch = useDispatch()
 
+  const [searchWord,setSearchWord] = useState("")
   const [editingPhotoId, setEditingPhotoId] = useState(null) 
   const [newDescription, setNewDescription] = useState("")
 
@@ -24,6 +28,15 @@ export const Favorites = () => {
       item.id === idToRemove ? { ...item, isFavorite: false } : item
     )
     dispatch(updatePhotoList(updatedPhotosToShow))
+  }
+
+  const handleSubmit= (e)=>{
+    e.preventDefault()
+    if(searchWord!=""){
+      setFavorites(favorites.filter((photo) => photo.description.includes(searchWord)))
+    }else{
+      setFavorites(initialFavorites)
+    }
   }
 
   const handleEdit = (photo) => {
@@ -41,10 +54,16 @@ export const Favorites = () => {
     setEditingPhotoId(photo.id) 
   }
 
+
   return (
     <>
       <h1>Favorite Photos</h1>
-      <input type="text" name="" id="searchFavorites" />
+      <form onSubmit={handleSubmit}>
+        <input type="text" name="" id="searchFavorites" onChange={(e)=>setSearchWord(e.currentTarget.value)}/>
+        <button type="submit">
+          <SearchIcon/>
+        </button>
+      </form>
       <h2>Your favorites photos</h2>
       {favorites.map((photo) => (
         <div key={photo.img} className="photo-card">

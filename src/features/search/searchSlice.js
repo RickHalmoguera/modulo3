@@ -17,7 +17,7 @@ export const searchSlice = createSlice({
         updatePhotoList: (state, action) => {
             state.data = action.payload
             
-          }
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(getAllThunk.pending, (state,action) => {
