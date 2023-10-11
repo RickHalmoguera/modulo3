@@ -14,8 +14,12 @@ export const favoriteSlice = createSlice({
       const photoIdToRemove = action.payload
       return state.filter((photo) => photo.id !== photoIdToRemove)
     },
+    updatePhotoFavoritesList: (state, action) => {
+      return state = action.payload
+      
+    }
   },
 })
 
-export const { addFavorite, removeFavorite } = favoriteSlice.actions
+export const { addFavorite, removeFavorite, updatePhotoFavoritesList } = favoriteSlice.actions
 export const getFavoritesData = (state)=> state.favorites

@@ -66,16 +66,7 @@ export const Search = () => {
         <div key={photo.img} className="photo-card">
           <img src={photo.img} alt={photo.description} />
           { photo.isFavorite ? <TurnedInIcon onClick={() => handleRemoveFromFavorite(photo,index)} /> : <TurnedInNotIcon onClick={() => handleAddToFavorite(photo,index)} />} 
-          <div className="photo-details">
-          <p>{photo.id}</p>
-            <p>{photo.description}</p>
-            <p>Date: {photo.date}</p>
-            <p>Dimensions: {photo.width}x{photo.height}</p>
-            <p>Likes: {photo.likes}</p>
-            <a href={photo.download} target="_blank" rel="noopener noreferrer">
-              Download
-            </a>
-          </div>
+        
         </div>
       ))}
     </>
