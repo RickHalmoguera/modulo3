@@ -3,18 +3,24 @@ import { useDispatch } from 'react-redux'
 import { getFavoritesData } from '../features/favoritesSlice/favoritesSlice'
 import { removeFavorite, updatePhotoFavoritesList } from '../features/favoritesSlice/favoritesSlice'
 import { getPhotoData, updatePhotoList } from "../features/search/searchSlice"
+import ImportExportIcon from '@mui/icons-material/ImportExport'
 import SearchIcon from '@mui/icons-material/Search'
 import EditIcon from '@mui/icons-material/Edit'
 import SaveIcon from '@mui/icons-material/Save'
 import TurnedInIcon from '@mui/icons-material/TurnedIn'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 export const Favorites = () => {
 
+  const dispatch = useDispatch()
   const photos = useSelector(getPhotoData)
   const [favorites, setFavorites] = useState (useSelector(getFavoritesData))
   const [initialFavorites,setInitialFavorites] = useState(favorites)
-  const dispatch = useDispatch()
+  const [isInverted, setIsInverted] = useState(false)
+  const [optionValue, setOptionValue] = useState("")
+  const [firstValueToSort, setFirstValueToSort] = useState("a")
+  const [secondValueToSort, setSecondValueToSort] = useState("b")
+
 
   const [searchWord,setSearchWord] = useState("")
   const [editingPhotoId, setEditingPhotoId] = useState(null) 
@@ -32,7 +38,7 @@ export const Favorites = () => {
 
   const handleSubmit= (e)=>{
     e.preventDefault()
-    if(searchWord!=""){
+    if(searchWord!==""){
       setFavorites(favorites.filter((photo) => photo.description.includes(searchWord)))
     }else{
       setFavorites(initialFavorites)
@@ -54,6 +60,33 @@ export const Favorites = () => {
     setEditingPhotoId(photo.id) 
   }
 
+  const handleChange = (e) => {
+    const selectedOption = e.target.value
+  
+    if (selectedOption === "width") {
+      const updatedPhotosToShow = [...favorites].sort(
+        (a, b) => a.width - b.width
+      )
+      setFavorites(updatedPhotosToShow)
+    } else if (selectedOption === "height") {
+      const updatedPhotosToShow = [...favorites].sort(
+        (a, b) => a.height - b.height
+      )
+      setFavorites(updatedPhotosToShow)
+    } else if (selectedOption === "likes") {
+      const updatedPhotosToShow = [...favorites].sort(
+        (a, b) => a.likes - b.likes
+      )
+      setFavorites(updatedPhotosToShow)
+    } else if (selectedOption === "date") {
+      const updatedPhotosToShow = [...favorites].sort(
+        (a, b) => new Date(a.date).getFullYear() - new Date(b.date).getFullYear()
+      )
+      setFavorites(updatedPhotosToShow)
+    }
+  }
+  
+
 
   return (
     <>
@@ -64,6 +97,16 @@ export const Favorites = () => {
           <SearchIcon/>
         </button>
       </form>
+      <label htmlFor="sort">Sort by: </label>
+      <select name="sort" id="sort" onChange={handleChange}>
+        <option value="width">Width</option>
+        <option value="height">Height</option>
+        <option value="likes">Likes</option>
+        <option value="date">Date</option>
+      </select>
+      <button>
+        <ImportExportIcon onClick ={()=> setIsInverted(!isInverted)}/>
+      </button>
       <h2>Your favorites photos</h2>
       {favorites.map((photo) => (
         <div key={photo.img} className="photo-card">
