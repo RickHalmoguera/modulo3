@@ -8,6 +8,7 @@ import EditIcon from '@mui/icons-material/Edit'
 import SaveIcon from '@mui/icons-material/Save'
 import TurnedInIcon from '@mui/icons-material/TurnedIn'
 import { useState } from 'react'
+import { Box } from '@mui/material'
 
 export const Favorites = () => {
 

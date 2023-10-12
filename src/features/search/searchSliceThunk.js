@@ -4,7 +4,7 @@ const API_URL = "https://api.unsplash.com/"
 const CLIENT_ID ="VlcM8qT9DXQJ9leBuNkAPNiI33xuIfsb4ZagTqN8QvY"
 
 export const getAllThunk = createAsyncThunk("photo/getRandomPhotos", async () => {
-    const request = await fetch(`${API_URL}/photos/random/?client_id=${CLIENT_ID}&count=15`)
+    const request = await fetch(`${API_URL}/photos/random/?client_id=${CLIENT_ID}&count=10`)
     const json = await request.json()
     
         return json.map(photo => ({

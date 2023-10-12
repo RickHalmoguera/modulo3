@@ -7,6 +7,13 @@ import { getPhotoData, getPhotoStatus, getPhotoError, updatePhotoList } from "..
 import { addFavorite, removeFavorite } from "../features/favoritesSlice/favoritesSlice";
 import { getSearchThunk, getAllThunk } from '../features/search/searchSliceThunk'
 
+import { Box } from "@mui/material"
+import Typography from '@mui/material/Typography'
+import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button';
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
+import ImageListItemBar from '@mui/material/ImageListItemBar'
 
 
 export const Search = () => {
@@ -48,32 +55,114 @@ export const Search = () => {
     dispatch(updatePhotoList(updatedPhotosToShow))
   };
 
-  if (status === "pending") {
-    return <div>Loading...</div>
-  }
-
-  if (status === "rejected") {
-    return <div>Error: {error}</div>
-  }
-
   return (
-    <>
-      <h1>Welcome to Photo Gallery!</h1>
+    <Box 
+      sx={{ backgroundColor: '#10141E'}}>
 
-      <form onSubmit={handleSubmit}>
-        <input type="text" name="" id="getPhoto" placeholder="Search fot photos..." onChange={(e)=>setSearchWord(e.currentTarget.value)}/>
-        <button type="submit">
-          <SearchIcon/>
-        </button>
-      </form>
-    
-      {photos.map((photo,index) => (
-        <div key={photo.img} className="photo-card">
-          <img src={photo.img} alt={photo.description} />
-          { photo.isFavorite ? <TurnedInIcon onClick={() => handleRemoveFromFavorite(photo,index)} /> : <TurnedInNotIcon onClick={() => handleAddToFavorite(photo,index)} />} 
+      <Typography 
+        variant='h2'  
+        color='#FFFFFF'
+        textAlign='center'
+        pt='2em'>
         
-        </div>
-      ))}
-    </>
+        Welcome to Photo Gallery!
+      </Typography>
+
+      <Box 
+        display= 'flex'
+        flexDirection='column'
+        alignItems='center'
+        gap='2em'
+        component="form"
+        sx={{ display: 'flex', alignItems: '' }}
+        onSubmit={handleSubmit}>
+
+          <Box
+            display='flex'
+            alignItems='center'
+            justifyContent='center'
+            mb='2em'
+          >
+            <TextField  variant="standard"  
+              id="getPhoto" 
+              label="Search for photos..." 
+              onChange={(e)=>setSearchWord(e.currentTarget.value)}
+              sx={{ input: { color: '#FFFFFF', fontSize: '1rem' },
+                '& label.Mui-focused': { color: '#FFFFFF' },
+                '& .MuiInputLabel-root': { color: '#FFFFFF' },
+                '& .MuiInput-underline:after': {
+                  borderBottomColor: '#5A698F', 
+                },}}
+            />
+
+            <Button 
+              variant='text'
+              
+              type="submit">
+              <SearchIcon sx={{fontSize:32, color:'#FFF' }}/>
+            </Button>
+
+          </Box>
+
+      </Box>
+      <Box>
+        {status === "pending" &&
+          <Typography
+          variant='h4'  
+          color='#FFFFFF'
+          textAlign='center'
+          fontWeight='100'
+          p='2em'
+          >
+            Loading...
+          </Typography>
+        }
+        {status === "rejected" &&
+          <Typography
+            variant='h4'  
+            color='#FFFFFF'
+            textAlign='center'
+            fontWeight='100'
+            p='2em'
+          >Error: {error}
+        </Typography>
+        }
+        <ImageList  cols={2} >
+          {status === "fulfilled" && photos.map((photo,index) => (
+            <ImageListItem key={photo.img} >
+              <img 
+              srcSet={photo.img}
+              src={photo.img} 
+              alt={photo.description} />
+              <ImageListItemBar 
+                position="top"
+                sx={{
+                  background:'transparent',
+                  color:'#FFFFFF',
+                  
+                }}
+                actionIcon={ photo.isFavorite ? 
+                <TurnedInIcon 
+                  sx={{fontSize:32,
+                      background:'rgba(0,0,0,0.3) 90%',
+                      borderRadius: 50,
+                      width: 40,
+                      height: 40,}} 
+                  onClick={() => handleRemoveFromFavorite(photo,index)} /> : 
+                  
+                  <TurnedInNotIcon  sx={{fontSize:32,
+                    background:'rgba(0,0,0,0.3) 90%',
+                    borderRadius: 50,
+                    width: 40,
+                    height: 40,}}  
+                  onClick={() => handleAddToFavorite(photo,index)} />} 
+                  actionPosition="right"
+              />
+              
+            </ImageListItem>
+          ))}
+        </ImageList>
+      </Box>
+    </Box>
   )
 }

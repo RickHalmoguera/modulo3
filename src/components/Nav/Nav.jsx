@@ -5,7 +5,6 @@ import { NavLink } from 'react-router-dom';
 
 
 import Box from '@mui/material/Box'
-import { Toolbar } from '@mui/material'
 import Typography from '@mui/material/Typography'
 
 export const Nav =()=> {
@@ -15,7 +14,7 @@ export const Nav =()=> {
     display: 'flex',
     alignItems: 'center', 
     justifyContent: 'space-between', 
-    padding: '10px 20px', }}>
+    padding: '1em', }}>
         <Typography 
         variant='h2' 
         color="#FC4747" 

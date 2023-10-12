@@ -14,7 +14,8 @@ const THEME = createTheme({
    "fontWeightLight": 100,
    "fontWeightRegular": 400,
    "fontWeightBold": 700
-  }
+  },
+  
 }) 
 
 const router = createBrowserRouter(createRoutesFromElements(

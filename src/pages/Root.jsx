@@ -14,7 +14,7 @@ export const Root = ()=>{
     return(
         <>
             <Nav />
-            <Outlet/>
+            <Outlet />
         </>
     )
 }
