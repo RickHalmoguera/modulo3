@@ -74,6 +74,7 @@ export const Search = () => {
         flexDirection='column'
         alignItems='center'
         gap='2em'
+        pt='2em'
         component="form"
         sx={{ display: 'flex', alignItems: '' }}
         onSubmit={handleSubmit}>
@@ -87,6 +88,7 @@ export const Search = () => {
             <TextField  variant="standard"  
               id="getPhoto" 
               label="Search for photos..." 
+              value={searchWord}
               onChange={(e)=>setSearchWord(e.currentTarget.value)}
               sx={{ input: { color: '#FFFFFF', fontSize: '1rem' },
                 '& label.Mui-focused': { color: '#FFFFFF' },
