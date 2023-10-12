@@ -57,13 +57,14 @@ export const Search = () => {
 
   return (
     <Box 
+      p='1em'
       sx={{ backgroundColor: '#10141E'}}>
 
       <Typography 
         variant='h2'  
         color='#FFFFFF'
         textAlign='center'
-        pt='2em'>
+        mt='2em'>
         
         Welcome to Photo Gallery!
       </Typography>
@@ -127,7 +128,11 @@ export const Search = () => {
           >Error: {error}
         </Typography>
         }
-        <ImageList  cols={2} >
+        <ImageList  
+          gap={12}
+          sx={{gridTemplateColumns:
+          'repeat(auto-fill,minmax(280px,1fr))!important'}} 
+        >
           {status === "fulfilled" && photos.map((photo,index) => (
             <ImageListItem key={photo.img} >
               <img 

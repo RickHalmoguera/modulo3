@@ -92,13 +92,14 @@ export const Favorites = () => {
   
   return (
     <Box 
+      p='1em'
       sx={{ backgroundColor: '#10141E'}}>
       
       <Typography 
         variant='h2'  
         color='#FFFFFF'
         textAlign='center'
-        pt='2em'>
+        mt='2em'>
         
         Favorites photos!
       </Typography>
