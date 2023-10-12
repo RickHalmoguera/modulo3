@@ -142,15 +142,16 @@ export const Search = () => {
                   
                 }}
                 actionIcon={ photo.isFavorite ? 
-                <TurnedInIcon 
-                  sx={{fontSize:32,
-                      background:'rgba(0,0,0,0.3) 90%',
-                      borderRadius: 50,
-                      width: 40,
-                      height: 40,}} 
-                  onClick={() => handleRemoveFromFavorite(photo,index)} /> : 
+                  <TurnedInIcon 
+                    sx={{fontSize:32,
+                        background:'rgba(0,0,0,0.3) 90%',
+                        borderRadius: 50,
+                        width: 40,
+                        height: 40,}} 
+                    onClick={() => handleRemoveFromFavorite(photo,index)} /> : 
                   
-                  <TurnedInNotIcon  sx={{fontSize:32,
+                  <TurnedInNotIcon  
+                    sx={{fontSize:32,
                     background:'rgba(0,0,0,0.3) 90%',
                     borderRadius: 50,
                     width: 40,

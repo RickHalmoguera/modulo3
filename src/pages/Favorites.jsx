@@ -9,6 +9,12 @@ import SaveIcon from '@mui/icons-material/Save'
 import TurnedInIcon from '@mui/icons-material/TurnedIn'
 import { useState } from 'react'
 import { Box } from '@mui/material'
+import Typography from '@mui/material/Typography'
+import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button';
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
+import ImageListItemBar from '@mui/material/ImageListItemBar'
 
 export const Favorites = () => {
 
@@ -85,14 +91,56 @@ export const Favorites = () => {
   }
   
   return (
-    <>
-      <h1>Favorite Photos</h1>
-      <form onSubmit={handleSubmit}>
-        <input type="text" name="" id="searchFavorites" onChange={(e)=>setSearchWord(e.currentTarget.value)}/>
-        <button type="submit">
-          <SearchIcon/>
-        </button>
-      </form>
+    <Box 
+      sx={{ backgroundColor: '#10141E'}}>
+      
+      <Typography 
+        variant='h2'  
+        color='#FFFFFF'
+        textAlign='center'
+        pt='2em'>
+        
+        Favorites photos!
+      </Typography>
+
+      <Box 
+        display= 'flex'
+        flexDirection='column'
+        alignItems='center'
+        gap='2em'
+        component="form"
+        sx={{ display: 'flex', alignItems: '' }}
+        onSubmit={handleSubmit}>
+
+          <Box
+            display='flex'
+            alignItems='center'
+            justifyContent='center'
+            mb='2em'
+          >
+            <TextField  variant="standard"  
+              id="getPhoto" 
+              label="Search for photos..." 
+              onChange={(e)=>setSearchWord(e.currentTarget.value)}
+              sx={{ input: { color: '#FFFFFF', fontSize: '1rem' },
+                '& label.Mui-focused': { color: '#FFFFFF' },
+                '& .MuiInputLabel-root': { color: '#FFFFFF' },
+                '& .MuiInput-underline:after': {
+                  borderBottomColor: '#5A698F', 
+                },}}
+            />
+
+            <Button 
+              variant='text'
+              
+              type="submit">
+              <SearchIcon sx={{fontSize:32, color:'#FFF' }}/>
+            </Button>
+
+          </Box>
+
+      </Box>
+
       <label htmlFor="sort">Sort by: </label>
       <select name="sort" id="sort" onChange={handleChange}>
         <option value="width">Width</option>
@@ -101,36 +149,63 @@ export const Favorites = () => {
         <option value="date">Date</option>
       </select>
       <h2>Your favorites photos</h2>
-      {favorites.map((photo) => (
-        <div key={photo.img} className="photo-card">
-          <img src={photo.img} alt={photo.description} />
-          <TurnedInIcon onClick={() => handleRemoveFavorite(photo)} />
-          <div className="photo-details">
-            {editingPhotoId === photo.id ? (
-              <input
-                type='text'
-                placeholder={photo.description}
-                onChange={(e) => setNewDescription(e.currentTarget.value)}
-              />
-            ) : (
-              <p>{photo.description}</p>
-            )}
-            <button>
+
+      <ImageList  cols={2} >
+        {favorites.map((photo) => (
+          <ImageListItem key={photo.img} className="photo-card">
+            <img 
+              srcSet={photo.img}
+              src={photo.img} 
+              alt={photo.description} 
+            />
+            <ImageListItemBar 
+              position="top"
+              sx={{
+                background:'transparent',
+                color:'#FFFFFF',
+                
+              }}
+              actionIcon={
+                <TurnedInIcon 
+                  sx={{fontSize:32,
+                      background:'rgba(0,0,0,0.3) 90%',
+                      borderRadius: 50,
+                      width: 40,
+                      height: 40,}}
+                  onClick={() => handleRemoveFavorite(photo)} />}
+            />
+
+            <Box className="photo-details">
               {editingPhotoId === photo.id ? (
-                <SaveIcon onClick={() => handleEdit(photo)} />
+                <input
+                  type='text'
+                  placeholder={photo.description}
+                  onChange={(e) => setNewDescription(e.currentTarget.value)}
+                />
               ) : (
-                <EditIcon onClick={() => handleClick(photo)} />
+                <Typography>{photo.description}</Typography>
               )}
-            </button>
-            <p>Date: {photo.date}</p>
-            <p>Dimensions: {photo.width}x{photo.height}</p>
-            <p>Likes: {photo.likes}</p>
-            <a href={photo.download} target="_blank" rel="noopener noreferrer">
-              Download
-            </a>
-          </div>
-        </div>
-      ))}
-    </>
+
+              <Button 
+                variant='text'>
+                {editingPhotoId === photo.id ? (
+                  <SaveIcon sx={{fontSize:32, color:'#FFF' }} onClick={() => handleEdit(photo)} />
+                ) : (
+                  <EditIcon sx={{fontSize:32, color:'#FFF' }} onClick={() => handleClick(photo)} />
+                )}
+              </Button>
+              
+              <Typography variant='p'color='#FFFFFF'>Date: {photo.date}</Typography>
+              <Typography variant='p'color='#FFFFFF' >Dimensions: {photo.width}x{photo.height}</Typography>
+              <Typography variant='p'color='#FFFFFF'>Likes: {photo.likes}</Typography>
+              <a href={photo.download} target="_blank" rel="noopener noreferrer">
+                Download
+              </a>
+            </Box>
+          </ImageListItem>
+        ))}
+
+      </ImageList>
+    </Box>
   )
 }
