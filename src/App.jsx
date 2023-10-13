@@ -8,6 +8,12 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 
 const font = "'Outfit', sans-serif"
 const THEME = createTheme({
+  palette:{
+    primary:{
+      main: '#FFFFFF',
+      dark:'#10141E'
+    }
+  },
   typography: {
    "fontFamily": font,
    "fontSize": 14,

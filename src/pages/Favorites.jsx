@@ -25,9 +25,7 @@ import Radio from '@mui/material/Radio'
 import RadioGroup from '@mui/material/RadioGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import FormLabel from '@mui/material/FormLabel'
-import Select from '@mui/material/Select'
-import InputLabel from '@mui/material/InputLabel'
-import MenuItem from '@mui/material/MenuItem'
+
 
 
 export const Favorites = () => {
@@ -108,7 +106,9 @@ export const Favorites = () => {
   return (
     <Box 
       p='1em'
-      sx={{ backgroundColor: '#10141E'}}>
+      sx={{ backgroundColor: '#10141E',
+            height:'100%'
+          }}>
       
       <Typography 
         variant='h2'  
@@ -171,7 +171,7 @@ export const Favorites = () => {
     <FormControlLabel
       color="default"
       value="width"
-      control={<Radio color="success"/>}
+      control={<Radio/>}
       label="Width"
       sx={{ color: 'white',
             fontSize:'1.5rem' }} 
@@ -352,12 +352,14 @@ export const Favorites = () => {
                 <TextField
                   variant='standard'
                   id='description'
+                  
                   onChange={(e) => setNewDescription(e.currentTarget.value)}
                   sx={{ input: { color: '#FFFFFF', fontSize: '1rem' },
                       '& label.Mui-focused': { color: '#FFFFFF' },
                       '& .MuiInputLabel-root': { color: '#FFFFFF' },
                       '& .MuiInput-underline:after': {
                         borderBottomColor: '#5A698F', 
+                        
                 },}}
                 />
               ) : (
