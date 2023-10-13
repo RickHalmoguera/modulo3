@@ -76,7 +76,7 @@ export const Search = () => {
         gap='2em'
         pt='2em'
         component="form"
-        sx={{ display: 'flex', alignItems: '' }}
+        
         onSubmit={handleSubmit}>
 
           <Box
@@ -150,7 +150,7 @@ export const Search = () => {
                 }}
                 actionIcon={ photo.isFavorite ? 
                   <TurnedInIcon 
-                    sx={{fontSize:32,
+                    sx={{
                         background:'rgba(0,0,0,0.3) 90%',
                         borderRadius: 50,
                         width: 40,
@@ -158,7 +158,7 @@ export const Search = () => {
                     onClick={() => handleRemoveFromFavorite(photo,index)} /> : 
                   
                   <TurnedInNotIcon  
-                    sx={{fontSize:32,
+                    sx={{
                     background:'rgba(0,0,0,0.3) 90%',
                     borderRadius: 50,
                     width: 40,

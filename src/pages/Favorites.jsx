@@ -3,18 +3,29 @@ import { useDispatch } from 'react-redux'
 import { getFavoritesData } from '../features/favoritesSlice/favoritesSlice'
 import { removeFavorite, updatePhotoFavoritesList } from '../features/favoritesSlice/favoritesSlice'
 import { getPhotoData, updatePhotoList } from "../features/search/searchSlice"
-import SearchIcon from '@mui/icons-material/Search'
-import EditIcon from '@mui/icons-material/Edit'
-import SaveIcon from '@mui/icons-material/Save'
-import TurnedInIcon from '@mui/icons-material/TurnedIn'
 import { useState } from 'react'
+
+import DownloadIcon from '@mui/icons-material/Download';
+import DateRangeIcon from '@mui/icons-material/DateRange'
+import ThumbUpIcon from '@mui/icons-material/ThumbUp'
+import SearchIcon from '@mui/icons-material/Search'
+import SaveIcon from '@mui/icons-material/Save'
+import EditIcon from '@mui/icons-material/Edit'
+import TurnedInIcon from '@mui/icons-material/TurnedIn'
+import HeightIcon from '@mui/icons-material/Height'
 import { Box } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
-import Button from '@mui/material/Button';
-import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
+import Button from '@mui/material/Button'
+import ImageList from '@mui/material/ImageList'
+import ImageListItem from '@mui/material/ImageListItem'
 import ImageListItemBar from '@mui/material/ImageListItemBar'
+import FormControl from '@mui/material/FormControl'
+import Select from '@mui/material/Select'
+import InputLabel from '@mui/material/InputLabel'
+import MenuItem from '@mui/material/MenuItem'
+import { Link } from 'react-router-dom'
+
 
 export const Favorites = () => {
 
@@ -22,6 +33,7 @@ export const Favorites = () => {
   const photos = useSelector(getPhotoData)
   const [favorites, setFavorites] = useState (useSelector(getFavoritesData))
   const [initialFavorites,setInitialFavorites] = useState(favorites)
+  const [sortValue,setSortValue] = useState("")
 
   const [searchWord,setSearchWord] = useState("")
   const [editingPhotoId, setEditingPhotoId] = useState(null) 
@@ -65,24 +77,25 @@ export const Favorites = () => {
   }
 
   const handleChange = (e) => {
-    const selectedOption = e.target.value
+    setSortValue(e.target.value)
+
   
-    if (selectedOption === "width") {
+    if (sortValue === "width") {
       const updatedPhotosToShow = [...favorites].sort(
         (a, b) => a.width - b.width
       )
       setFavorites(updatedPhotosToShow)
-    } else if (selectedOption === "height") {
+    } else if (sortValue === "height") {
       const updatedPhotosToShow = [...favorites].sort(
         (a, b) => a.height - b.height
       )
       setFavorites(updatedPhotosToShow)
-    } else if (selectedOption === "likes") {
+    } else if (sortValue === "likes") {
       const updatedPhotosToShow = [...favorites].sort(
         (a, b) => a.likes - b.likes
       )
       setFavorites(updatedPhotosToShow)
-    } else if (selectedOption === "date") {
+    } else if (sortValue === "date") {
       const updatedPhotosToShow = [...favorites].sort(
         (a, b) => new Date(a.date).getFullYear() - new Date(b.date).getFullYear()
       )
@@ -90,6 +103,8 @@ export const Favorites = () => {
     }
   }
   
+
+
   return (
     <Box 
       p='1em'
@@ -109,8 +124,9 @@ export const Favorites = () => {
         flexDirection='column'
         alignItems='center'
         gap='2em'
+        pt='2em'
         component="form"
-        sx={{ display: 'flex', alignItems: '' }}
+        
         onSubmit={handleSubmit}>
 
           <Box
@@ -142,22 +158,39 @@ export const Favorites = () => {
 
       </Box>
 
-      <label htmlFor="sort">Sort by: </label>
-      <select name="sort" id="sort" onChange={handleChange}>
-        <option value="width">Width</option>
-        <option value="height">Height</option>
-        <option value="likes">Likes</option>
-        <option value="date">Date</option>
-      </select>
-      <h2>Your favorites photos</h2>
+      <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+        <InputLabel id="labelSort">Sort by</InputLabel>
+        <Select
+          labelId="labelSort"
+          id="demo-simple-select-standard"
+          onChange={handleChange}
+          label="Sort by"
+          value={sortValue}
+        >
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+          <MenuItem value={'width'}>Width</MenuItem>
+          <MenuItem value={'height'}>Twenty</MenuItem>
+          <MenuItem value={'likes'}>Likes</MenuItem>
+          <MenuItem value={'date'}>Date</MenuItem>
+        </Select>
+      </FormControl>
 
-      <ImageList  cols={2} >
+   
+
+      <ImageList
+        gap={12}
+        sx={{gridTemplateColumns:
+        'repeat(auto-fill,minmax(280px,1fr))!important'}}>
         {favorites.map((photo) => (
-          <ImageListItem key={photo.img} className="photo-card">
+          <ImageListItem key={photo.img}  className="photo-card">
             <img 
               srcSet={photo.img}
               src={photo.img} 
-              alt={photo.description} 
+              alt={photo.description}
+              sx={{maxHeight: '50px' }}
+              
             />
             <ImageListItemBar 
               position="top"
@@ -168,7 +201,7 @@ export const Favorites = () => {
               }}
               actionIcon={
                 <TurnedInIcon 
-                  sx={{fontSize:32,
+                  sx={{
                       background:'rgba(0,0,0,0.3) 90%',
                       borderRadius: 50,
                       width: 40,
@@ -176,15 +209,132 @@ export const Favorites = () => {
                   onClick={() => handleRemoveFavorite(photo)} />}
             />
 
-            <Box className="photo-details">
+            <Box sx={{display:'flex',
+                        justifyContent:'space-between',
+                        alignItems:'center',
+                        p:1,}}>
+              
+              <Box sx={{display:'flex',
+                        flexDirection:'column',
+                        gap:1,
+                        justifyContent:'space-between',
+                        }}>
+
+              <Box sx={{display:'flex',
+                        gap:3,
+                        alignItems: 'center',}}>
+
+                <Box sx={{display:'flex',
+                        gap:1,
+                        alignItems: 'center',}}>
+                  <HeightIcon
+                    sx={{
+                      color:'#FFF',
+                      width: 32,
+                      height: 32,}} 
+                  />
+
+                  <Typography 
+                    variant='p'
+                    color='#FFFFFF'>
+                      {photo.height}
+                  </Typography>
+                </Box>
+
+                <Box sx={{display:'flex',
+                        gap:1,
+                        alignItems: 'center',}}>
+                  <HeightIcon
+                    sx={{
+                      color:'#FFF',
+                      width: 32,
+                      height: 32,
+                      transform: 'rotate(90deg)',}} 
+                  />
+                  <Typography 
+                    variant='p'
+                    color='#FFFFFF'>
+                      {photo.width}
+                  </Typography>
+                </Box>
+              </Box>
+
+              <Box sx={{display:'flex',
+                      justifyContent:'space-between',
+                      }}>
+                  <Box sx={{display:'flex',
+                        gap:1,
+                        alignItems: 'center',}}>
+                    <ThumbUpIcon
+                      sx={{
+                        color:'#FFF',
+                        width: 32,
+                        height: 32,}} 
+                    />
+                    <Typography 
+                      variant='p'
+                      color='#FFFFFF'>
+                        {photo.likes}
+                    </Typography>
+                  </Box>
+  
+                  <Box sx={{display:'flex',
+                        gap:1,
+                        alignItems: 'center',}}>
+                    <DateRangeIcon
+                      sx={{
+                        color:'#FFF',
+                        width: 32,
+                        height: 32,}} 
+                    />
+                    <Typography 
+                      variant='p'
+                      color='#FFFFFF'>
+                        {new Date(photo.date).getFullYear()}
+                    </Typography>
+                  </Box>
+              </Box>
+              
+
+              </Box>
+                  
+    
+
+              <Link to={photo.download}>
+                <DownloadIcon
+                  sx={{
+                    color:'#FFF',
+                    width: 32,
+                    height: 32,}} 
+                    />
+              </Link>
+            </Box>
+
+             
+            
+            
+
+            <Box 
+              sx={{ display: 'flex',
+                    justifyContent:'space-between' }}>
               {editingPhotoId === photo.id ? (
-                <input
-                  type='text'
-                  placeholder={photo.description}
+                <TextField
+                  variant='standard'
+                  id='description'
                   onChange={(e) => setNewDescription(e.currentTarget.value)}
+                  sx={{ input: { color: '#FFFFFF', fontSize: '1rem' },
+                      '& label.Mui-focused': { color: '#FFFFFF' },
+                      '& .MuiInputLabel-root': { color: '#FFFFFF' },
+                      '& .MuiInput-underline:after': {
+                        borderBottomColor: '#5A698F', 
+                },}}
                 />
               ) : (
-                <Typography>{photo.description}</Typography>
+                <Typography
+                  color='#FFF'
+                  fontSize='1.2rem'>
+                    {photo.description}
+                </Typography>
               )}
 
               <Button 
@@ -195,13 +345,7 @@ export const Favorites = () => {
                   <EditIcon sx={{fontSize:32, color:'#FFF' }} onClick={() => handleClick(photo)} />
                 )}
               </Button>
-              
-              <Typography variant='p'color='#FFFFFF'>Date: {photo.date}</Typography>
-              <Typography variant='p'color='#FFFFFF' >Dimensions: {photo.width}x{photo.height}</Typography>
-              <Typography variant='p'color='#FFFFFF'>Likes: {photo.likes}</Typography>
-              <a href={photo.download} target="_blank" rel="noopener noreferrer">
-                Download
-              </a>
+
             </Box>
           </ImageListItem>
         ))}
