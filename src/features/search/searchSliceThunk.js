@@ -33,7 +33,7 @@ export const getSearchThunk = createAsyncThunk("photo/getSearchPhotos", async (s
             width: photo.width,
             height: photo.height,
             img: photo.urls.small,
-            download: photo.links.download,
+            download: photo.links.download_location,
             likes: photo.likes
         }))
     }

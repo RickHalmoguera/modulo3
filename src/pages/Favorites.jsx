@@ -3,9 +3,9 @@ import { useDispatch } from 'react-redux'
 import { getFavoritesData } from '../features/favoritesSlice/favoritesSlice'
 import { removeFavorite, updatePhotoFavoritesList } from '../features/favoritesSlice/favoritesSlice'
 import { getPhotoData, updatePhotoList } from "../features/search/searchSlice"
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
-import DownloadIcon from '@mui/icons-material/Download';
+import DownloadIcon from '@mui/icons-material/Download'
 import DateRangeIcon from '@mui/icons-material/DateRange'
 import ThumbUpIcon from '@mui/icons-material/ThumbUp'
 import SearchIcon from '@mui/icons-material/Search'
@@ -21,10 +21,13 @@ import ImageList from '@mui/material/ImageList'
 import ImageListItem from '@mui/material/ImageListItem'
 import ImageListItemBar from '@mui/material/ImageListItemBar'
 import FormControl from '@mui/material/FormControl'
+import Radio from '@mui/material/Radio'
+import RadioGroup from '@mui/material/RadioGroup'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import FormLabel from '@mui/material/FormLabel'
 import Select from '@mui/material/Select'
 import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
-import { Link } from 'react-router-dom'
 
 
 export const Favorites = () => {
@@ -76,33 +79,30 @@ export const Favorites = () => {
     setEditingPhotoId(photo.id) 
   }
 
-  const handleChange = (e) => {
-    setSortValue(e.target.value)
-
-  
-    if (sortValue === "width") {
-      const updatedPhotosToShow = [...favorites].sort(
-        (a, b) => a.width - b.width
-      )
-      setFavorites(updatedPhotosToShow)
-    } else if (sortValue === "height") {
-      const updatedPhotosToShow = [...favorites].sort(
-        (a, b) => a.height - b.height
-      )
-      setFavorites(updatedPhotosToShow)
-    } else if (sortValue === "likes") {
-      const updatedPhotosToShow = [...favorites].sort(
-        (a, b) => a.likes - b.likes
-      )
-      setFavorites(updatedPhotosToShow)
-    } else if (sortValue === "date") {
-      const updatedPhotosToShow = [...favorites].sort(
-        (a, b) => new Date(a.date).getFullYear() - new Date(b.date).getFullYear()
-      )
-      setFavorites(updatedPhotosToShow)
+  useEffect(() => {
+    const sortFavorites = () => {
+      if (sortValue === "width") {
+        return [...favorites].sort((a, b) => a.width - b.width)
+      } else if (sortValue === "height") {
+        return [...favorites].sort((a, b) => a.height - b.height)
+      } else if (sortValue === "likes") {
+        return [...favorites].sort((a, b) => a.likes - b.likes)
+      } else if (sortValue === "date") {
+        return [...favorites].sort(
+          (a, b) => new Date(a.date).getFullYear() - new Date(b.date).getFullYear()
+        )
+      } else {
+        return favorites
+      }
     }
-  }
+
+
+    setFavorites(sortFavorites)
+  }, [sortValue])
   
+  const handleChange = (e) => {
+    setSortValue(e.target.value);
+  }
 
 
   return (
@@ -158,26 +158,23 @@ export const Favorites = () => {
 
       </Box>
 
-      <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-        <InputLabel id="labelSort">Sort by</InputLabel>
-        <Select
-          labelId="labelSort"
-          id="demo-simple-select-standard"
-          onChange={handleChange}
-          label="Sort by"
-          value={sortValue}
-        >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          <MenuItem value={'width'}>Width</MenuItem>
-          <MenuItem value={'height'}>Twenty</MenuItem>
-          <MenuItem value={'likes'}>Likes</MenuItem>
-          <MenuItem value={'date'}>Date</MenuItem>
-        </Select>
-      </FormControl>
+      
 
-   
+      <FormControl>
+      <FormLabel id="demo-row-radio-buttons-group-label">Sort by:</FormLabel>
+      <RadioGroup
+        row
+        aria-labelledby="demo-row-radio-buttons-group-label"
+        name="row-radio-buttons-group"
+        onChange={handleChange}
+      >
+        <FormControlLabel value="width" control={<Radio />} label="Width" />
+        <FormControlLabel value="height" control={<Radio />} label="Height" />
+        <FormControlLabel value="likes" control={<Radio />} label="Likes" />
+        <FormControlLabel value="date" control={<Radio />} label="Date" />
+        
+      </RadioGroup>
+    </FormControl>
 
       <ImageList
         gap={12}
@@ -236,7 +233,8 @@ export const Favorites = () => {
 
                   <Typography 
                     variant='p'
-                    color='#FFFFFF'>
+                    fontSize='1.5rem'
+                    color='#5A698F'>
                       {photo.height}
                   </Typography>
                 </Box>
@@ -253,7 +251,8 @@ export const Favorites = () => {
                   />
                   <Typography 
                     variant='p'
-                    color='#FFFFFF'>
+                    fontSize='1.5rem'
+                    color='#5A698F'>
                       {photo.width}
                   </Typography>
                 </Box>
@@ -273,7 +272,8 @@ export const Favorites = () => {
                     />
                     <Typography 
                       variant='p'
-                      color='#FFFFFF'>
+                      fontSize='1.5rem'
+                      color='#5A698F'>
                         {photo.likes}
                     </Typography>
                   </Box>
@@ -289,7 +289,8 @@ export const Favorites = () => {
                     />
                     <Typography 
                       variant='p'
-                      color='#FFFFFF'>
+                      fontSize='1.5rem'
+                      color='#5A698F'>
                         {new Date(photo.date).getFullYear()}
                     </Typography>
                   </Box>
@@ -300,14 +301,15 @@ export const Favorites = () => {
                   
     
 
-              <Link to={photo.download}>
+              <a href={photo.download} download>
                 <DownloadIcon
                   sx={{
-                    color:'#FFF',
+                    color: '#FFF',
                     width: 32,
-                    height: 32,}} 
-                    />
-              </Link>
+                    height: 32,
+                  }}
+                />
+              </a>
             </Box>
 
              
