@@ -34,12 +34,12 @@ const router = createBrowserRouter(createRoutesFromElements(
 
 function App() {
   return (
-    <ThemeProvider theme ={THEME}>
+    <RouterProvider router ={router}>
+      <ThemeProvider theme ={THEME}>
       <CssBaseline />
-      <RouterProvider router ={router}>
       <Root />
-      </RouterProvider>
-    </ThemeProvider>
+      </ThemeProvider>
+    </RouterProvider>
   )
 }
 
