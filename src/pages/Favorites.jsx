@@ -161,20 +161,49 @@ export const Favorites = () => {
       
 
       <FormControl>
-      <FormLabel id="demo-row-radio-buttons-group-label">Sort by:</FormLabel>
-      <RadioGroup
-        row
-        aria-labelledby="demo-row-radio-buttons-group-label"
-        name="row-radio-buttons-group"
-        onChange={handleChange}
-      >
-        <FormControlLabel value="width" control={<Radio />} label="Width" />
-        <FormControlLabel value="height" control={<Radio />} label="Height" />
-        <FormControlLabel value="likes" control={<Radio />} label="Likes" />
-        <FormControlLabel value="date" control={<Radio />} label="Date" />
-        
-      </RadioGroup>
-    </FormControl>
+  <FormLabel id="demo-row-radio-buttons-group-label">Sort by:</FormLabel>
+  <RadioGroup
+    row
+    aria-labelledby="demo-row-radio-buttons-group-label"
+    name="row-radio-buttons-group"
+    onChange={handleChange}
+  >
+    <FormControlLabel
+      color="default"
+      value="width"
+      control={<Radio color="success"/>}
+      label="Width"
+      sx={{ color: 'white',
+            fontSize:'1.5rem' }} 
+    />
+    <FormControlLabel
+      value="height"
+      control={<Radio />}
+      label="Height"
+      sx={{ color: 'white',
+            fontSize:'1.5rem' }}
+    />
+    <FormControlLabel
+      value="likes"
+      control={<Radio />}
+      label="Likes"
+      sx={{ color: 'white',
+            fontSize:16 }}
+    />
+    <FormControlLabel
+      value="date"
+      control={<Radio />}
+      label="Date"
+      sx={{
+        color: 'white',
+        '&.Mui-checked': {
+          color: 'white',
+        },
+      }}
+    />
+  </RadioGroup>
+</FormControl>
+
 
       <ImageList
         gap={12}

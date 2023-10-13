@@ -10,7 +10,7 @@ const font = "'Outfit', sans-serif"
 const THEME = createTheme({
   typography: {
    "fontFamily": font,
-   "fontSize": 10,
+   "fontSize": 14,
    "fontWeightLight": 100,
    "fontWeightRegular": 400,
    "fontWeightBold": 700
